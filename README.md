@@ -82,3 +82,9 @@ This project is an updated version of **Seeing Theory**, created by [Seeing Theo
 - Original site: <https://seeing-theory.brown.edu/>
 
 What changed in this version: the site was rebuilt from scratch in plain HTML, CSS and JavaScript (no dependencies or build step), and extended from the original's six chapters to fourteen, adding a second course on statistical inference (chapters 7–14). Chapter 1's definitions of expectation and variance and its coin, die and card experiments follow the original; the other labs and text are new. This version is not affiliated with or endorsed by the original authors.
+
+## License
+
+[Apache License 2.0](LICENSE), the same license as the original. Copyright 2026 dnguye.
+
+Some of the home page's text (`index.html`) is taken from the original Seeing Theory, Copyright 2016–2019 its authors, under the Apache License 2.0, some passages word for word and some edited: the opening lines on randomness, the definition of an event's probability and the coin's long-run frequency in "Chance events", and the definitions of expectation and variance. All code and all other text are new. See [NOTICE](NOTICE).

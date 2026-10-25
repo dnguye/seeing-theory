@@ -1,0 +1,12 @@
+Seeing Theory, rebuilt
+Copyright 2026 dnguye
+
+This product includes text from Seeing Theory
+(https://github.com/seeingtheory/Seeing-Theory), Copyright 2016-2019
+Daniel Kunin, Jingru Guo, Tyler Dae Devlin and Daniel Xiang (Brown University),
+licensed under the Apache License, Version 2.0.
+
+The text taken from it is on the home page (index.html): the opening lines on
+randomness, parts of "Chance events", and the definitions of expectation and
+variance, some passages word for word and some edited for this version. All
+code and all other text are new.
