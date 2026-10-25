@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hypothesis Testing · Seeing Theory</title>
+<meta name="description" content="Null distributions and p-values, Type I and Type II errors, statistical power, and what a t-test looks like when you run it a thousand times.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 10</p>
+      <h1>Hypothesis testing</h1>
+      <p class="lead">Is the effect real, or could chance alone have produced it? A hypothesis test answers by asking how surprising the data would be if there were no effect at all.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="p-values" data-nav="p-values">
+    <div class="prose">
+      <h2>Null distributions and p-values</h2>
+      <p>A test begins with a <em>null hypothesis</em> H₀, the sceptical position: the coin is fair, the drug does nothing, the two groups have the same mean. Assuming H₀, we know the sampling distribution of our test statistic, the <em>null distribution</em>. Then we compute the statistic from the data and ask where it falls.</p>
+      <p>The <em>p-value</em> is the probability, if H₀ were true, of a statistic at least as extreme as the one observed. A small p-value means the data would be surprising under H₀, which counts as evidence against it. By convention we <em>reject</em> H₀ when p falls below a preset <em>significance level</em> α, often 0.05. The p-value is not the probability that H₀ is true; it is the probability of the data given H₀, a distinction that Bayes' theorem in chapter 14 makes precise.</p>
+    </div>
+    <div class="lab" data-lab="pvalue"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set z = 1.8. Two-sided, p = 0.072: not significant at 0.05. Right-tailed, p = 0.036: significant. The same data, two answers, which is why the alternative must be chosen before looking at the data.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="errors-power" data-nav="Errors & power">
+    <div class="prose">
+      <h2>Type I and Type II errors, and power</h2>
+      <p>A test can fail in two ways. Rejecting H₀ when it is true is a <em>Type I error</em>; its probability is exactly α, by construction. Failing to reject H₀ when it is false is a <em>Type II error</em>, with probability β. The <em>power</em> of a test, 1 − β, is the probability of detecting an effect that is really there.</p>
+      <p>Power depends on three things: the size of the true effect δ, the noise σ, and the sample size n. Small effects in noisy data need large samples. Lowering α to guard against false alarms raises β, so the two errors trade off; only more data improves both. Planning a study means choosing n so that power is adequate, typically 80% or more, for the smallest effect worth finding.</p>
+    </div>
+    <div class="lab" data-lab="power"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>With δ = 0.8, σ = 1 and n = 10, power is about 80%. Halve the effect to 0.4 and power drops to about 35%; find the n that brings it back to 80%. Then set δ = 0 and notice that the “power” equals α: with no effect, rejections are false alarms.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="t-test" data-nav="The t-test">
+    <div class="prose">
+      <h2>The t-test in practice</h2>
+      <p>The most common test compares two group means. With samples of size n from each group, the two-sample <em>t statistic</em> divides the difference in means by its standard error, and under H₀ it follows a t distribution with 2n − 2 degrees of freedom. The lab runs whole experiments: it draws two groups, computes t and p, and keeps a histogram of the p-values across many repetitions.</p>
+      <p>That histogram is the most instructive picture in this chapter. When there is no effect, p-values are <em>uniform</em> on [0, 1]: 5% of null experiments give p &lt; 0.05, which is what α means. When there is an effect, p-values crowd toward 0, and the fraction below 0.05 is the power. Running many tests and reporting the ones that came out significant is how false discoveries are manufactured.</p>
+    </div>
+    <div class="lab" data-lab="ttest"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set the true difference to 0 and run 1,000 experiments: the histogram is flat and about 5% are “significant”. Set it to 0.5 with n = 20 and the fraction climbs to roughly a third, so most real effects of that size go undetected. What n gets you to 80%?</p>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

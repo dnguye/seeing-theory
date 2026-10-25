@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confidence Intervals · Seeing Theory</title>
+<meta name="description" content="What a confidence level really means, how interval width depends on n and confidence, t intervals for small samples, and the bootstrap.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 9</p>
+      <h1>Confidence intervals</h1>
+      <p class="lead">A point estimate is a single number that is almost certainly wrong. An interval estimate admits the uncertainty: a range of values, built so that it captures the truth a known fraction of the time.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="confidence" data-nav="What confidence means">
+    <div class="prose">
+      <h2>What 95% confidence means</h2>
+      <p>Since x̄ is approximately Normal(μ, σ²/n), it lands within 1.96 standard errors of μ about 95% of the time. Turn that around: the interval x̄ ± 1.96 σ/√n contains μ about 95% of the time. That interval is a <em>95% confidence interval</em>, and in general</p>
+      <div class="math"><math display="block"><mrow><mover><mi>x</mi><mo>¯</mo></mover><mo>±</mo><msub><mi>z</mi><mrow><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub><mspace width="0.2em"></mspace><mfrac><mi>σ</mi><msqrt><mi>n</mi></msqrt></mfrac></mrow></math></div>
+      <p>The 95% is a property of the <em>procedure</em>, not of any one interval. A particular interval either contains μ or it doesn't; we just don't know which. What we know is that intervals built this way succeed 95% of the time in the long run. The lab draws 100 samples, builds 100 intervals, and colours the ones that miss.</p>
+    </div>
+    <div class="lab" data-lab="coverage"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Lower the confidence level to 80%: the intervals shrink and about 20 of every 100 turn red. Raise n from 15 to 60: the intervals halve in width and the coverage stays 95%. Confidence is about how often you are right; width is about how much you have said.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="t-intervals" data-nav="t intervals">
+    <div class="prose">
+      <h2>When σ is unknown: t intervals</h2>
+      <p>The formula above needs σ, which we almost never know. Substituting the sample standard deviation s adds noise, and for small samples the normal critical value 1.96 is then too small: the intervals miss more often than advertised. The fix is the t distribution of chapter 7. Use the critical value from t with n − 1 degrees of freedom instead:</p>
+      <div class="math"><math display="block"><mrow><mover><mi>x</mi><mo>¯</mo></mover><mo>±</mo><msub><mi>t</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn><mo>,</mo><mspace width="0.1em"></mspace><mi>α</mi><mo>/</mo><mn>2</mn></mrow></msub><mspace width="0.2em"></mspace><mfrac><mi>s</mi><msqrt><mi>n</mi></msqrt></mfrac></mrow></math></div>
+      <p>With n = 5 the 95% t critical value is 2.78 rather than 1.96, so the interval is 40% wider. Switch the lab above between the three methods with n = 5 and compare the long-run coverage: z with σ known is exact, t is exact, and z with s falls short.</p>
+    </div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: with n = 3 and the “z with s” method, roughly what coverage do you get instead of 95%?</summary>
+        <p>About 86%. Set n = 3, choose “z with s” and run several batches; the tally will settle in the mid-80s. Then choose t and watch it return to 95%.</p>
+      </details>
+    </aside>
+  </section>
+
+  <section class="concept" id="bootstrap" data-nav="Bootstrap">
+    <div class="prose">
+      <h2>The bootstrap</h2>
+      <p>The interval formulas rely on the sampling distribution of the statistic, which we could derive for the mean but not for, say, a median or a ratio. The <em>bootstrap</em> sidesteps the derivation with computation. Treat the sample as if it were the population, draw new samples of size n from it <em>with replacement</em>, and compute the statistic each time. The spread of those bootstrap statistics estimates the spread of the real sampling distribution.</p>
+      <p>A 95% bootstrap interval runs from the 2.5th to the 97.5th percentile of the bootstrap values. Below, one sample of 30 skewed observations is all we have; a thousand resamples give a standard error and an interval without any formula.</p>
+    </div>
+    <div class="lab" data-lab="bootstrap"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Resample once, several times, and watch which points were picked and how many times. Then resample 1,000 times and compare the bootstrap standard error with the formula s/√n: they agree closely for the mean, which is reassuring, but the bootstrap would have worked just as well for the median.</p>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

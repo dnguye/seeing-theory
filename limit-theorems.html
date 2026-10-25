@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limit Theorems · Seeing Theory</title>
+<meta name="description" content="The law of large numbers, including a distribution for which it fails, the central limit theorem, and the normal approximation to the binomial.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 1 · Chapter 6</p>
+      <h1>Limit theorems</h1>
+      <p class="lead">Two theorems explain why statistics works at all. The law of large numbers says averages settle down. The central limit theorem says how they wobble on the way: like a bell curve, no matter where the data came from.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="lln" data-nav="Large numbers">
+    <div class="prose">
+      <h2>The law of large numbers, and when it fails</h2>
+      <p>Chapter 1 showed the law for a coin: the running frequency of heads converges to P(heads). The general statement is about any random variable with a finite mean μ. If X₁, X₂, … are independent copies of it, the sample mean (X₁ + ··· + Xₙ)/n converges to μ as n → ∞.</p>
+      <p>The condition matters. The <em>Cauchy</em> distribution, a bell-shaped curve with much heavier tails than the normal, has no mean at all: its tails are so heavy that the integral ∫ x f(x) dx does not converge. Averages of Cauchy samples never settle. Every so often a single enormous value drags the running mean across the chart, and averaging a million of them is no better than looking at one.</p>
+    </div>
+    <div class="lab" data-lab="lln"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Run the die a few times and watch all six paths funnel into 3.5. Then choose Cauchy and run it several times. Notice that the running mean of a Cauchy sample has exactly the same distribution as a single Cauchy draw.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="clt" data-nav="Central limit theorem">
+    <div class="prose">
+      <h2>The central limit theorem</h2>
+      <p>Take n independent draws from <em>any</em> distribution with mean μ and finite variance σ², and compute their mean. That sample mean is itself random. The central limit theorem says its distribution is approximately normal, with the same mean μ and a much smaller standard deviation:</p>
+      <div class="math"><math display="block"><mrow><mover><mi>X</mi><mo>¯</mo></mover><mo>≈</mo><mi>N</mi><mrow><mo>(</mo><mi>μ</mi><mo>,</mo><mfrac><msup><mi>σ</mi><mn>2</mn></msup><mi>n</mi></mfrac><mo>)</mo></mrow></mrow></math></div>
+      <p>The parent distribution can be flat, skewed, two-humped or a die; the averages still pile up in a bell. How large n must be depends on the parent: for a symmetric parent a handful suffices, for a strongly skewed one you may need 30 or more. The lab draws samples, computes their means, and stacks them into a histogram beside the predicted normal curve.</p>
+    </div>
+    <div class="lab" data-lab="clt" data-n="10"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Choose the exponential parent with n = 2 and draw 1,000 samples: still skewed. Raise n to 30: the bell is there. Then choose Cauchy: no n is enough, because the theorem needs a finite variance.</p>
+      <details>
+        <summary>Check yourself: why does the SD of the sample mean shrink like 1/√n rather than 1/n?</summary>
+        <p>Variances of independent terms add. The sum of n terms has variance nσ², so the mean has variance nσ²/n² = σ²/n, and standard deviation σ/√n. Quadrupling the sample halves the spread.</p>
+      </details>
+    </aside>
+  </section>
+
+  <section class="concept" id="normal-approximation" data-nav="Normal approximation">
+    <div class="prose">
+      <h2>The normal approximation to the binomial</h2>
+      <p>A binomial count is a sum of n Bernoulli variables, so the central limit theorem applies directly: for large n, Bin(n, p) is approximately Normal(np, np(1 − p)). Historically this was the first central limit theorem, proved by de Moivre in 1733 for a fair coin, and it turned tedious binomial sums into a single table lookup.</p>
+      <p>The approximation is good when both np and n(1 − p) are at least about 10. For small p the binomial is skewed and the Poisson is the better approximation. The dashed curve below is the matching normal; slide n and p and judge the fit yourself.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="binomial" data-overlay="normal"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set p = 0.05 and n = 20: the normal curve extends into negative counts and misses the shape. Raise n to 60 and the fit improves, as np reaches 3, then push toward 10.</p>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Continuous Distributions · Seeing Theory</title>
+<meta name="description" content="Density and area, the uniform, exponential, normal, gamma and beta distributions, explorable with sliders and sampling.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 1 · Chapter 4</p>
+      <h1>Continuous distributions</h1>
+      <p class="lead">Heights, waiting times and measurement errors don't come in steps. For continuous random variables probability lives in areas under a curve, and a few curves, above all the normal, describe an astonishing share of the world.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="density" data-nav="Density">
+    <div class="prose">
+      <h2>Density and area</h2>
+      <p>A continuous random variable can take any value in an interval, so no single value can carry positive probability: there are too many of them. Instead, probability is spread out according to a <em>probability density function</em> f, and the probability of landing in an interval is the area under f over that interval:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>a</mi><mo>≤</mo><mi>X</mi><mo>≤</mo><mi>b</mi><mo>)</mo><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mspace width="0.2em"></mspace><mi>d</mi><mi>x</mi><mo>=</mo><mi>F</mi><mo>(</mo><mi>b</mi><mo>)</mo><mo>−</mo><mi>F</mi><mo>(</mo><mi>a</mi><mo>)</mo></mrow></math></div>
+      <p>The total area is 1. The density itself is not a probability, and can exceed 1; only areas are probabilities. The cumulative distribution function F(x) = P(X ≤ x) accumulates area from the left, so a probability over an interval is just a difference of two values of F. Expectation and variance become integrals: E[X] = ∫ x f(x) dx.</p>
+    </div>
+    <div class="lab" data-lab="area"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>On the normal, set a = b. The probability is 0 even though the density there is 0.4. Then use the empirical-rule chips: about 68%, 95% and 99.7% of a normal distribution lie within one, two and three standard deviations of the mean.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="uniform-exponential" data-nav="Uniform & exponential">
+    <div class="prose">
+      <h2>Uniform and exponential</h2>
+      <p>The <em>uniform</em> distribution on [a, b] is the continuous version of “equally likely”: flat density 1/(b − a), mean (a + b)/2, variance (b − a)²/12. It is what a random number generator produces, and every other distribution can be built from it.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="uniform"></div>
+    <div class="prose">
+      <p>The <em>exponential</em> distribution describes waiting times between events that occur at a steady rate λ, the continuous partner of the Poisson: if events per hour are Poisson(λ), the wait for the next one is Exponential(λ) with mean 1/λ. Like the geometric distribution it is memoryless: having already waited ten minutes does not shorten the expected remaining wait.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="exponential"></div>
+  </section>
+
+  <section class="concept" id="normal" data-nav="Normal">
+    <div class="prose">
+      <h2>The normal distribution</h2>
+      <p>The bell curve. A normal random variable with mean μ and standard deviation σ has density</p>
+      <div class="math"><math display="block"><mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mi>σ</mi><msqrt><mrow><mn>2</mn><mi>π</mi></mrow></msqrt></mrow></mfrac><mspace width="0.2em"></mspace><msup><mi>e</mi><mrow><mo>−</mo><msup><mrow><mo>(</mo><mi>x</mi><mo>−</mo><mi>μ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>/</mo><mn>2</mn><msup><mi>σ</mi><mn>2</mn></msup></mrow></msup></mrow></math></div>
+      <p>Changing μ slides the curve; changing σ stretches it. Every normal distribution is the same shape, so any normal question can be converted to the standard normal (μ = 0, σ = 1) by <em>standardising</em>: z = (x − μ)/σ counts how many standard deviations x lies from the mean. That is why one table of the standard normal CDF once served all of statistics.</p>
+      <p>The normal distribution matters not because nature prefers it but because of the central limit theorem: sums and averages of many small independent effects are approximately normal whatever the effects' own distributions. Chapter 6 shows it happening.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="normal"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: heights are Normal(170, 8²). What fraction of people are taller than 186 cm?</summary>
+        <p>z = (186 − 170)/8 = 2. About 2.3% of a normal distribution lies more than two standard deviations above the mean, so roughly 2.3%. Set μ = 0, σ = 1 in the density lab above with a = 2, b = 4 to read it off.</p>
+      </details>
+    </aside>
+  </section>
+
+  <section class="concept" id="gamma-beta" data-nav="Gamma & beta">
+    <div class="prose">
+      <h2>Gamma and beta</h2>
+      <p>Two flexible families finish the chapter. The <em>gamma</em> distribution, with shape k and scale θ, lives on positive numbers and includes the exponential (k = 1) and chi-square (θ = 2, k = df/2) as special cases. The sum of k independent Exponential(1/θ) waits is Gamma(k, θ), so it models the time until the k-th event. Mean kθ, variance kθ².</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="gamma"></div>
+    <div class="prose">
+      <p>The <em>beta</em> distribution lives on [0, 1], which makes it the natural distribution for a probability. Beta(1, 1) is uniform; Beta(α, β) with large parameters concentrates near α/(α + β). It reappears in chapter 14 as the Bayesian's way of expressing belief about a coin's bias.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="beta"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set both beta parameters to 0.5: the density piles up at the ends, a U shape. Set α = 8, β = 2: it leans toward 1. Then find the gamma settings that reproduce the exponential lab above.</p>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

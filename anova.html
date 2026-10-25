@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analysis of Variance · Seeing Theory</title>
+<meta name="description" content="Comparing several group means at once: between-group and within-group variation, the F statistic and its distribution.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 12</p>
+      <h1>Analysis of variance</h1>
+      <p class="lead">The t-test compares two means. With three or more groups, running every pairwise test inflates the chance of a false alarm. ANOVA asks the question once, by comparing how much the group means differ with how much the data scatter within groups.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="between-within" data-nav="Between vs within">
+    <div class="prose">
+      <h2>Between-group and within-group variation</h2>
+      <p>Take k groups of n observations each. The total variation of the data around the grand mean splits exactly into two pieces: the variation of the group means around the grand mean (<em>between</em>, SSB), and the variation of the observations around their own group means (<em>within</em>, SSW). If all groups share the same true mean, the between-group piece is just more sampling noise and should be about the same size, per degree of freedom, as the within-group piece.</p>
+      <div class="math"><math display="block"><mrow><mi>F</mi><mo>=</mo><mfrac><mrow><mi mathvariant="normal">SSB</mi><mo>/</mo><mo>(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mrow><mi mathvariant="normal">SSW</mi><mo>/</mo><mo>(</mo><mi>N</mi><mo>−</mo><mi>k</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
+      <p>The ratio F is near 1 when the null hypothesis of equal means is true and grows when the means really differ. Under H₀ it follows the F distribution of chapter 7 with k − 1 and N − k degrees of freedom, so a p-value follows in the usual way.</p>
+    </div>
+    <div class="lab" data-lab="anova"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set all three true means to 0 and repeat 1,000 times: F follows the green curve and about 5% of experiments reject. Move one mean to 1 with σ = 1 and n = 10; the rejection rate jumps. Then raise σ to 2 and watch the same difference disappear into the noise.</p>
+      <details>
+        <summary>Check yourself: why not just run three t-tests?</summary>
+        <p>Each test has a 5% false-alarm rate. Three of them together raise the chance of at least one false alarm to about 14%, and with ten groups (45 pairs) it exceeds 90%. ANOVA controls the overall rate with a single test; if it rejects, follow-up comparisons can be made with appropriate corrections.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

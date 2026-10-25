@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joint Distributions · Seeing Theory</title>
+<meta name="description" content="Joint and marginal distributions, conditional distributions, covariance and correlation, and sums of random variables.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 1 · Chapter 5</p>
+      <h1>Joint distributions</h1>
+      <p class="lead">Most interesting questions involve two or more random variables at once: height and weight, today's price and tomorrow's. A joint distribution describes them together, and covariance measures how they move together.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="joint-marginal" data-nav="Joint & marginal">
+    <div class="prose">
+      <h2>Joint, marginal and conditional distributions</h2>
+      <p>For two discrete random variables the <em>joint</em> PMF gives P(X = x, Y = y) for every pair. Summing across a row or a column recovers the distribution of one variable on its own, the <em>marginal</em> distribution, so called because those sums were traditionally written in the margins of the table. Fixing one variable and renormalising a row gives the <em>conditional</em> distribution of the other:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>Y</mi><mo>=</mo><mi>y</mi><mo>|</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo>,</mo><mi>Y</mi><mo>=</mo><mi>y</mi><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>x</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
+      <p>X and Y are independent when the joint PMF factors into the product of the marginals for every pair. In the table below, X is the first of two dice and Y is their sum. They are clearly dependent: a high first die rules out low sums.</p>
+    </div>
+    <div class="lab" data-lab="joint"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Roll 1,000 pairs and switch to the observed view. The empty triangles stay empty (those pairs are impossible), and each filled cell hovers around 1/36 ≈ 0.028.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="covariance" data-nav="Covariance">
+    <div class="prose">
+      <h2>Covariance and correlation</h2>
+      <p>Variance measured how one variable spreads around its mean. <em>Covariance</em> measures whether two variables deviate from their means in the same direction:</p>
+      <div class="math"><math display="block"><mrow><mi mathvariant="normal">Cov</mi><mo>(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>)</mo><mo>=</mo><mi mathvariant="normal">E</mi><mo>[</mo><mo>(</mo><mi>X</mi><mo>−</mo><mi mathvariant="normal">E</mi><mi>X</mi><mo>)</mo><mo>(</mo><mi>Y</mi><mo>−</mo><mi mathvariant="normal">E</mi><mi>Y</mi><mo>)</mo><mo>]</mo><mo>=</mo><mi mathvariant="normal">E</mi><mo>[</mo><mi>X</mi><mi>Y</mi><mo>]</mo><mo>−</mo><mi mathvariant="normal">E</mi><mo>[</mo><mi>X</mi><mo>]</mo><mi mathvariant="normal">E</mi><mo>[</mo><mi>Y</mi><mo>]</mo></mrow></math></div>
+      <p>Positive covariance: when X is above its mean, Y tends to be too. Its units are awkward (centimetres times kilograms), so we divide by both standard deviations to get the <em>correlation</em> ρ, a pure number between −1 and 1. ρ = ±1 means the points lie exactly on a line; ρ = 0 means no linear relationship, which is weaker than independence, since a perfect U-shaped relationship also has ρ = 0.</p>
+      <p>Independent variables have zero covariance, and that is what makes variances add: Var(X + Y) = Var(X) + Var(Y) + 2 Cov(X, Y).</p>
+    </div>
+    <div class="lab" data-lab="correlation"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Play the quiz a few times. Most people can tell 0.3 from 0.9 but struggle between 0.5 and 0.7, and negative correlations look weaker than they are. Notice also that the sample r wobbles around ρ even with 200 points.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="sums" data-nav="Sums">
+    <div class="prose">
+      <h2>Sums of random variables</h2>
+      <p>Expectation is always additive, E[X + Y] = E[X] + E[Y], whether or not X and Y are independent. The distribution of a sum is harder: for independent variables it is the <em>convolution</em> of the two distributions, which for dice means counting the ways to reach each total.</p>
+      <p>Adding independent copies of the same distribution smooths it out rapidly. One die is flat, two make a triangle, three make a curve that already looks like a bell. This regularity is the seed of the central limit theorem in the next chapter.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="dicesum"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: what are the mean and variance of the sum of 10 dice?</summary>
+        <p>One die has mean 3.5 and variance 35/12 ≈ 2.917. Means add and, for independent dice, so do variances: mean 35, variance 29.17, standard deviation 5.4. Set the slider to 10 and compare.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

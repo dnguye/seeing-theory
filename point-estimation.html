@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Point Estimation · Seeing Theory</title>
+<meta name="description" content="Estimators as random variables: bias, variance and mean squared error, maximum likelihood, and why the sample variance divides by n − 1.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 8</p>
+      <h1>Point estimation</h1>
+      <p class="lead">An estimator is a recipe for guessing a parameter from data. Since the data are random, so is the guess. Good estimators are the ones whose guesses land close to the truth on average, and reliably.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="estimators" data-nav="Bias & variance">
+    <div class="prose">
+      <h2>Bias, variance and mean squared error</h2>
+      <p>An <em>estimator</em> θ̂ of a parameter θ is a statistic, so it has a sampling distribution. Two features of that distribution matter. Its <em>bias</em> is how far its centre is from the truth, E[θ̂] − θ. Its <em>variance</em> is how much it scatters from sample to sample. Both hurt, and they combine into one overall measure:</p>
+      <div class="math"><math display="block"><mrow><mi mathvariant="normal">MSE</mi><mo>(</mo><mover><mi>θ</mi><mo>^</mo></mover><mo>)</mo><mo>=</mo><mi mathvariant="normal">E</mi><mo>[</mo><msup><mrow><mo>(</mo><mover><mi>θ</mi><mo>^</mo></mover><mo>−</mo><mi>θ</mi><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo><mo>=</mo><msup><mi mathvariant="normal">bias</mi><mn>2</mn></msup><mo>+</mo><mi mathvariant="normal">variance</mi></mrow></math></div>
+      <p>The dartboard makes it visual. An unbiased estimator with high variance sprays darts around the bullseye; a biased one with low variance clusters tightly in the wrong place. Sometimes the second is better: a little bias can buy a large reduction in variance. Unbiasedness is a virtue, not the only one.</p>
+    </div>
+    <div class="lab" data-lab="estimators"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Compare bias 0, SD 1.0 (MSE = 1.00) against bias 0.5, SD 0.5 (MSE = 0.50). The biased estimator is twice as accurate on average. Then take 100 estimates of each and look at how the average lands.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="maximum-likelihood" data-nav="Maximum likelihood">
+    <div class="prose">
+      <h2>Maximum likelihood</h2>
+      <p>Where do estimators come from? The most general recipe is <em>maximum likelihood</em>. Write down the probability of the observed data as a function of the unknown parameter, the <em>likelihood function</em>, and choose the parameter value that makes the data most probable. For h heads in n flips the likelihood is</p>
+      <div class="math"><math display="block"><mrow><mi>L</mi><mo>(</mo><mi>p</mi><mo>)</mo><mo>=</mo><msup><mi>p</mi><mi>h</mi></msup><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mi>h</mi></mrow></msup></mrow></math></div>
+      <p>and it peaks at p̂ = h/n, the sample proportion. Because products are awkward we usually maximise the logarithm instead; it has the same peak. Maximum likelihood estimators are consistent, approximately normal for large samples, and as precise as any estimator can be, which is why they are the default in most of statistics.</p>
+      <p>A simpler recipe, the <em>method of moments</em>, matches sample averages to population moments: set the sample mean equal to E[X] and solve. For the coin both recipes give h/n; for other models they differ.</p>
+    </div>
+    <div class="lab" data-lab="likelihood"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Keep pressing “Flip 10 more”. The peak sharpens as n grows, which is the likelihood's way of saying the estimate is becoming more certain. Switch to the log scale to see the curve become a parabola near its peak.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="n-minus-one" data-nav="n − 1">
+    <div class="prose">
+      <h2>Why the sample variance divides by n − 1</h2>
+      <p>The obvious estimator of the population variance is the average squared deviation from the sample mean, dividing by n. It is biased: the sample mean is closer to the sample points than the true mean is, so squared deviations from it come out slightly too small, by a factor of exactly (n − 1)/n. Dividing by n − 1 instead corrects this, and that corrected version is what statistical software calls the sample variance s².</p>
+      <p>The lab draws many samples from a Normal(0, 1) population, so the truth is σ² = 1, and compares the two estimators. The biased one centres below 1; the corrected one centres on it. The gap is large for small n and negligible for large n.</p>
+    </div>
+    <div class="lab" data-lab="clt" data-parents="normal" data-stats="var_n,var" data-n="5" data-nmax="50"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: with n = 5, what is the expected value of the ÷ n estimator?</summary>
+        <p>σ²(n − 1)/n = 1 × 4/5 = 0.8. Draw 1,000 samples and check that the mean of the estimates sits near 0.8, while the ÷ (n − 1) version sits near 1.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Categorical Data · Seeing Theory</title>
+<meta name="description" content="Chi-square tests: goodness of fit for a die, and the test of independence in a two-way table.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 11</p>
+      <h1>Categorical data</h1>
+      <p class="lead">Not all data are measurements. Votes, die faces, yes-or-no answers are counts in categories, and the chi-square statistic is the standard way to ask whether observed counts match what a hypothesis predicts.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="goodness-of-fit" data-nav="Goodness of fit">
+    <div class="prose">
+      <h2>Goodness of fit</h2>
+      <p>Roll a die 120 times. A fair die predicts 20 of each face, but you will not get exactly 20. How far from 20 is too far? Pearson's <em>chi-square statistic</em> sums the squared gaps between observed and expected counts, each scaled by the expected count:</p>
+      <div class="math"><math display="block"><mrow><msup><mi>χ</mi><mn>2</mn></msup><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><mfrac><msup><mrow><mo>(</mo><msub><mi>O</mi><mi>i</mi></msub><mo>−</mo><msub><mi>E</mi><mi>i</mi></msub><mo>)</mo></mrow><mn>2</mn></msup><msub><mi>E</mi><mi>i</mi></msub></mfrac></mrow></math></div>
+      <p>If the die is fair and the expected counts are not too small, this statistic follows approximately a chi-square distribution with k − 1 degrees of freedom, where k is the number of categories (the −1 because the counts must sum to n). Large values are evidence against fairness. The lab rolls a die that you can quietly load, and shows both the single test and how the statistic behaves over a thousand repetitions.</p>
+    </div>
+    <div class="lab" data-lab="gof"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Leave the die fair and repeat 1,000 times: about 5% of experiments reject anyway, the Type I rate. Add 0.10 extra weight on the 6 with n = 120: the test catches it only sometimes. Raise n to 600 and it catches it nearly every time. Bias that is invisible in 120 rolls is obvious in 600.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="independence" data-nav="Independence">
+    <div class="prose">
+      <h2>Tests of independence</h2>
+      <p>The same statistic tests whether two categorical variables are related. Cross-tabulate the sample into a <em>contingency table</em>, say two groups by a yes-or-no answer. If group and answer were independent, the expected count in each cell would be (row total × column total)/n, the product rule from chapter 2 applied to the marginal proportions. Compare with the observed counts using χ², now with (rows − 1)(columns − 1) degrees of freedom: one, for a 2 × 2 table.</p>
+      <p>A small p-value says the answer rate differs between groups by more than sampling noise explains. It says nothing about why, and nothing about the size of the difference: with n large enough, a trivial difference is significant, so always report the proportions alongside the p-value.</p>
+    </div>
+    <div class="lab" data-lab="independence"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Make the two conditional probabilities equal, so the variables are truly independent, and draw samples repeatedly: p bounces around uniformly and dips below 0.05 about one time in twenty. Then set them to 0.50 and 0.55 with n = 2,000 and see how a 5-point difference becomes “significant”.</p>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

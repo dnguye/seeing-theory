@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compound Probability · Seeing Theory</title>
+<meta name="description" content="Set operations, counting, conditional probability, independence and Bayes' theorem, each with an experiment you can run.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 1 · Chapter 2</p>
+      <h1>Compound probability</h1>
+      <p class="lead">One event is easy. Real questions involve several: this <em>or</em> that, this <em>and</em> that, this <em>given</em> that. This chapter builds the algebra of events and ends with the most useful formula in the subject, Bayes' theorem.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="set-operations" data-nav="Sets">
+    <div class="prose">
+      <h2>Events as sets</h2>
+      <p>Because events are sets of outcomes, the language of sets is the language of compound events. The <em>union</em> A ∪ B is the event that A or B (or both) occurs. The <em>intersection</em> A ∩ B is the event that both occur. The <em>complement</em> Aᶜ is the event that A does not occur.</p>
+      <p>Probabilities of unions have a trap. Adding P(A) and P(B) counts the overlap twice, so it has to be subtracted once:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>+</mo><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo><mo>−</mo><mi>P</mi><mo>(</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo>)</mo></mrow></math></div>
+      <p>When A and B cannot both happen, they are <em>mutually exclusive</em>, the overlap is empty, and the probabilities simply add. Below, every cell is one equally likely outcome; resize the events and their overlap, pick a region, and check the formula against random picks.</p>
+    </div>
+    <div class="lab" data-lab="sets"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Make the overlap 0. Now A and B are mutually exclusive and P(A ∪ B) = P(A) + P(B) exactly. Then make A a subset of B (overlap equal to the size of A): P(A ∪ B) = P(B).</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="counting" data-nav="Counting">
+    <div class="prose">
+      <h2>Counting</h2>
+      <p>When outcomes are equally likely, probability is a counting problem: the number of favourable outcomes over the total. Two counting patterns come up constantly. A <em>permutation</em> is an ordered arrangement of k items chosen from n; there are n(n − 1)···(n − k + 1) = n!/(n − k)! of them. A <em>combination</em> is an unordered selection; each set of k items has been counted k! times among the permutations, so there are</p>
+      <div class="math"><math display="block"><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo></mrow><mo>=</mo><mfrac><mrow><mi>n</mi><mo>!</mo></mrow><mrow><mi>k</mi><mo>!</mo><mo>(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>)</mo><mo>!</mo></mrow></mfrac></mrow></math></div>
+      <p>The question to ask is always: does the order matter? A committee of three does not care who was picked first; a podium of gold, silver and bronze does.</p>
+    </div>
+    <div class="lab" data-lab="counting"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: what is the probability that a random 5-card hand from a 52-card deck contains all four aces?</summary>
+        <p>Order doesn't matter, so count hands: C(52, 5) = 2,598,960 in total. Hands with all four aces are the four aces plus any one of the other 48 cards: 48 of them. Probability 48 / 2,598,960 ≈ 0.0000185, about 1 in 54,000.</p>
+      </details>
+    </aside>
+  </section>
+
+  <section class="concept" id="conditional-probability" data-nav="Conditional">
+    <div class="prose">
+      <h2>Conditional probability and independence</h2>
+      <p>New information shrinks the sample space. If you learn that event B has occurred, the outcomes outside B are ruled out, and the probability of A must be recomputed relative to what remains:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>|</mo><mi>B</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>∩</mo><mi>B</mi><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
+      <p>Rearranged, this is the <em>multiplication rule</em>, P(A ∩ B) = P(B) P(A | B): the probability that both happen is the probability of the first times the probability of the second given the first.</p>
+      <p>Sometimes learning B changes nothing: P(A | B) = P(A). Then A and B are <em>independent</em>, and the multiplication rule simplifies to P(A ∩ B) = P(A) P(B). Independence is a statement about information, not about whether the events can happen together. Explore both ideas with two dice below.</p>
+    </div>
+    <div class="lab" data-lab="conditional"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set A = “sum is 7” and B = “first die is 6”. They are independent: whatever the first die shows, exactly one value of the second die makes the sum 7. Now change A to “sum ≥ 10” and see the dependence appear.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="bayes-theorem" data-nav="Bayes">
+    <div class="prose">
+      <h2>Bayes' theorem</h2>
+      <p>The multiplication rule can be written in either order: P(A ∩ B) = P(B) P(A | B) = P(A) P(B | A). Dividing through gives a way to reverse a conditional probability:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>|</mo><mi>B</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mi>P</mi><mo>(</mo><mi>B</mi><mo>|</mo><mi>A</mi><mo>)</mo><mspace width="0.2em"></mspace><mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo></mrow><mrow><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo></mrow></mfrac></mrow></math></div>
+      <p>This matters because the two directions feel similar but can be wildly different. A medical test may detect a disease 90% of the time when it is present, P(positive | sick) = 0.9, and yet a positive result may mean only a small chance of illness, because the disease is rare and false alarms among the many healthy people outnumber the true positives.</p>
+      <p>The clearest way to see it is to imagine 1,000 people and count. That is what the lab does: the sliders set the prevalence and the test's accuracy, and the dots show who ends up in each group.</p>
+    </div>
+    <div class="lab" data-lab="bayes"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>With prevalence 1%, sensitivity 90% and specificity 90%, only about 8% of positives are sick. Raise the prevalence to 30% and watch that number jump. Then push specificity to 99%: cutting false alarms helps far more than raising sensitivity does.</p>
+      <details>
+        <summary>Check yourself: which changes P(sick | positive) more, sensitivity 90 → 99% or specificity 90 → 99%?</summary>
+        <p>At 1% prevalence, specificity. Raising sensitivity adds at most one more true positive per 1,000 people; raising specificity removes about 89 false positives. The base rate decides which error dominates.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

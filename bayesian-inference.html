@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bayesian Inference · Seeing Theory</title>
+<meta name="description" content="Bayes' theorem for inference: prior, likelihood and posterior for a coin, with credible intervals and a comparison to the frequentist view.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 14</p>
+      <h1>Bayesian inference</h1>
+      <p class="lead">Frequentist methods treat parameters as fixed and ask how data would vary. Bayesian methods treat parameters as uncertain and update that uncertainty with data, using nothing more than the conditional probability rules of chapter 2.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="bayes-rule" data-nav="Bayes' theorem">
+    <div class="prose">
+      <h2>Bayes' theorem as inference</h2>
+      <p>Chapter 2 used Bayes' theorem to reverse a conditional probability: from P(positive | sick) to P(sick | positive). Read it as an inference: the disease status is an unknown state of the world, the test result is data, and the theorem says how the data should change our belief about the state. Before the test, the probability of disease was the prevalence, the <em>prior</em>. After, it is P(sick | positive), the <em>posterior</em>.</p>
+      <p>Everything in Bayesian statistics is this calculation applied to parameters instead of diagnoses. The population of 1,000 people below is the same lab as in chapter 2; look at it now as a prior being updated.</p>
+    </div>
+    <div class="lab" data-lab="bayes"></div>
+  </section>
+
+  <section class="concept" id="likelihood" data-nav="Likelihood">
+    <div class="prose">
+      <h2>The likelihood function</h2>
+      <p>For a continuous parameter such as a coin's bias p, the data's probability as a function of p is the <em>likelihood</em> L(p) = P(data | p), the same function that maximum likelihood estimation maximised in chapter 8. Bayesians use the whole curve, not just its peak. Its shape says which values of p make the data plausible; its width says how much the data have to tell.</p>
+    </div>
+    <div class="lab" data-lab="likelihood"></div>
+  </section>
+
+  <section class="concept" id="prior-to-posterior" data-nav="Prior to posterior">
+    <div class="prose">
+      <h2>From prior to posterior</h2>
+      <p>Bayes' theorem for a parameter reads</p>
+      <div class="math"><math display="block"><mrow><mi>p</mi><mo>(</mo><mi>θ</mi><mo>|</mo><mi mathvariant="normal">data</mi><mo>)</mo><mo>∝</mo><mi>p</mi><mo>(</mo><mi mathvariant="normal">data</mi><mo>|</mo><mi>θ</mi><mo>)</mo><mspace width="0.2em"></mspace><mi>p</mi><mo>(</mo><mi>θ</mi><mo>)</mo></mrow></math></div>
+      <p>posterior ∝ likelihood × prior. The prior p(θ) encodes what was believed before the data; the likelihood carries the data; the posterior is the updated belief, a full distribution over θ. For a coin, a Beta(α, β) prior is convenient: multiplied by the binomial likelihood of h heads and t tails it gives a Beta(α + h, β + t) posterior. The parameters act like counts of imaginary prior flips, and the data simply add to them.</p>
+      <p>From the posterior come direct probability statements about the parameter. A 95% <em>credible interval</em> is a range that holds 95% of the posterior probability, which is the statement most people wrongly take a confidence interval to be making. With a flat prior and plenty of data, the two intervals nearly coincide; with strong priors or little data, they differ, and the difference is exactly the prior's contribution.</p>
+    </div>
+    <div class="lab" data-lab="posterior"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Start with the flat prior Beta(1, 1) and flip 10 times: the posterior is just the scaled likelihood. Now set a confident prior, Beta(20, 20), centred on a fair coin, and flip 10 times from the p = 0.7 coin: the posterior barely moves. Flip 100 more and the data overwhelm the prior. Two analysts with different priors converge as evidence accumulates.</p>
+      <details>
+        <summary>Check yourself: the prior is Beta(2, 2) and you observe 8 heads in 10 flips. What is the posterior mean, and how does it compare with the MLE?</summary>
+        <p>Posterior Beta(10, 4), mean 10/14 ≈ 0.714. The MLE is 0.8. The prior's two imaginary heads and two imaginary tails pull the estimate toward 0.5, a shrinkage that vanishes as the flips pile up.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

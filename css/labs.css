@@ -1,0 +1,130 @@
+/* Seeing Theory — site chrome (chapter dropdown, chapter head, pager) and lab components used across chapters. */
+
+/* ---------- chapter dropdown ---------- */
+.dropdown { position: relative; }
+.dropdown-btn {
+  display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.7rem 0.4rem 0.5rem;
+  border: 1px solid var(--rule); border-radius: var(--r-control); background: var(--surface); color: var(--ink);
+  font-family: var(--font-display); font-size: 0.9rem; font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background-color 120ms, border-color 120ms;
+}
+.dropdown-btn:hover, .dropdown-btn[aria-expanded="true"] { background: var(--grid); border-color: var(--ink-3); }
+.dropdown-num { display: inline-grid; place-items: center; min-width: 1.4rem; height: 1.4rem; padding: 0 0.3rem; border-radius: 5px; background: var(--blue); color: #fff; font-weight: 700; font-size: 0.8rem; }
+.menu {
+  position: absolute; top: calc(100% + 8px); left: 0; z-index: 20;
+  width: min(760px, calc(100vw - 2rem)); padding: 1rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: var(--r-panel); box-shadow: var(--shadow);
+}
+.menu[hidden] { display: none; }
+.menu-course { margin: 0 0 0.4rem; padding: 0 0.6rem; font-weight: 600; font-size: 0.85rem; color: var(--ink-2); }
+.menu-list { list-style: none; margin: 0; padding: 0; }
+.menu-list a { display: grid; grid-template-columns: 1.6rem 1fr; gap: 0.5rem; padding: 0.5rem 0.6rem; border-radius: var(--r-control); color: var(--ink); text-decoration: none; transition: background-color 120ms; }
+.menu-list a:hover { background: var(--grid); }
+.menu-list a.is-current { background: var(--blue-soft); }
+.menu-num { font-weight: 700; color: var(--ink-3); }
+.menu-list a.is-current .menu-num { color: var(--blue); }
+.menu-list strong { display: block; font-weight: 600; line-height: 1.25; }
+.menu-blurb { display: block; font-size: 0.78rem; color: var(--ink-2); line-height: 1.35; margin-top: 0.1rem; }
+@media (max-width: 720px) {
+  .dropdown-title { max-width: 30vw; overflow: hidden; text-overflow: ellipsis; }
+  .menu { position: fixed; top: 60px; left: 1rem; right: 1rem; width: auto; grid-template-columns: 1fr; max-height: calc(100vh - 80px); overflow-y: auto; }
+  .menu-blurb { display: none; }
+}
+
+/* ---------- chapter head (non-hero chapters) ---------- */
+.chapter-head { max-width: var(--page); margin: 0 auto; padding: clamp(3rem, 8vh, 5.5rem) clamp(1rem, 3vw, 2.5rem) 0; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: clamp(2rem, 4vw, 4rem); align-items: end; }
+.chapter-head h1 { font-size: clamp(2.5rem, 1.8rem + 3.5vw, 4.5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1; font-variation-settings: "opsz" 96; margin-bottom: 1.25rem; }
+.chapter-head .lead { max-width: 36em; }
+.chapter-toc-label { font-family: var(--font-display); font-size: 0.85rem; color: var(--ink-2); margin: 0 0 0.5rem 1rem; }
+.chapter-toc { list-style: none; margin: 0; padding: 0; border-left: 3px solid var(--blue); }
+.chapter-toc a { display: block; padding: 0.4rem 0 0.4rem 1rem; color: var(--ink); text-decoration: none; font-family: var(--font-display); font-weight: 500; border-bottom: 1px solid var(--rule); transition: color 120ms; }
+.chapter-toc li:last-child a { border-bottom: 0; }
+.chapter-toc a:hover { color: var(--blue); }
+@media (max-width: 860px) { .chapter-head { grid-template-columns: 1fr; } }
+
+/* ---------- prev / next pager ---------- */
+.pager { max-width: var(--page); margin: clamp(3rem, 7vh, 5rem) auto 0; padding: 0 clamp(1rem, 3vw, 2.5rem); display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.pager-link { display: flex; flex-direction: column; gap: 0.2rem; padding: 1rem 1.25rem; border: 1px solid var(--rule); border-radius: var(--r-panel); background: var(--surface); color: var(--ink); text-decoration: none; font-family: var(--font-display); transition: border-color 120ms; }
+.pager-link:hover { border-color: var(--blue); }
+.pager-link span { font-size: 0.8rem; color: var(--ink-2); }
+.pager-link strong { font-weight: 600; }
+.pager-next { text-align: right; align-items: flex-end; }
+@media (max-width: 560px) { .pager { grid-template-columns: 1fr; } .pager-next { text-align: left; align-items: flex-start; } }
+
+/* ---------- full chapter list ---------- */
+.chapter-courses { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem 2.5rem; }
+.chapter-courses h3 { font-size: 1.05rem; color: var(--ink-2); margin: 0 0 0.6rem; font-weight: 600; }
+.chapters .chapter-list { grid-template-columns: 1fr; }
+
+/* ---------- swatch variants ---------- */
+.swatch--green-dash { background: repeating-linear-gradient(90deg, var(--green) 0 5px, transparent 5px 9px); }
+.swatch--ink-dash { background: repeating-linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 9px); }
+.swatch--grey-dash { background: repeating-linear-gradient(90deg, var(--ink-3) 0 5px, transparent 5px 9px); }
+.swatch--ink { background: var(--ink); }
+.swatch--red-hollow { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--red); background: transparent; }
+.chart-box--square { max-width: 520px; }
+
+/* ---------- sets: 10×10 sample-space grid ---------- */
+.cell-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; max-width: 420px; }
+.cell { aspect-ratio: 1; border-radius: 4px; background: var(--grid); opacity: 0.4; transition: opacity 120ms; }
+.cell--a { background: var(--blue); }
+.cell--b { background: var(--gold); }
+.cell--both { background: var(--green); }
+.cell--none { background: var(--ink-3); }
+.cell--sel { opacity: 1; }
+.cell--hit { box-shadow: 0 0 0 3px var(--ink); opacity: 1; }
+
+/* ---------- counting ---------- */
+.tokens { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+.token { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--grid); color: var(--ink-2); font-weight: 600; font-family: var(--font-display); }
+.token--on { background: var(--blue); color: #fff; }
+.enum-list { display: flex; flex-wrap: wrap; gap: 0.3rem; max-height: 260px; overflow-y: auto; }
+.enum { font-family: var(--font-display); font-size: 0.85rem; padding: 0.2rem 0.5rem; border-radius: 5px; background: var(--grid); color: var(--ink-2); font-variant-numeric: tabular-nums; letter-spacing: 0.02em; }
+.enum--on { background: var(--blue); color: #fff; }
+.enum--more { background: transparent; }
+
+/* ---------- conditional: 6×6 dice grid ---------- */
+.dice-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; max-width: 360px; }
+.dcell { display: grid; place-items: center; aspect-ratio: 1; border-radius: 6px; font-family: var(--font-display); font-size: 0.8rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.dcell--out { background: var(--grid); color: var(--ink-3); opacity: 0.5; }
+.dcell--b { background: var(--gold-soft); color: var(--ink); }
+.dcell--ab { background: var(--green); color: #fff; }
+.dcell--hit { box-shadow: 0 0 0 3px var(--ink); opacity: 1; }
+
+/* ---------- bayes: 1,000 people ---------- */
+.people { display: grid; grid-template-columns: repeat(50, 1fr); gap: 2px; max-width: 640px; }
+.person { aspect-ratio: 1; border-radius: 50%; background: var(--grid); transition: opacity 150ms; }
+.person--tp { background: var(--red); }
+.person--fn { background: transparent; box-shadow: inset 0 0 0 2px var(--red); }
+.person--fp { background: var(--gold); }
+.person--tn { background: var(--ink-3); opacity: 0.45; }
+.person--dim { opacity: 0.06; }
+@media (max-width: 600px) { .people { grid-template-columns: repeat(40, 1fr); gap: 1.5px; } }
+
+/* ---------- tables (joint, 2×2) ---------- */
+.table-scroll { overflow-x: auto; }
+.joint { border-collapse: separate; border-spacing: 3px; font-family: var(--font-display); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.joint th { font-weight: 600; color: var(--ink-2); padding: 0.25rem 0.35rem; text-align: center; }
+.joint tbody th { text-align: right; }
+.joint td { text-align: center; padding: 0.3rem 0.35rem; border-radius: 4px; background: color-mix(in srgb, var(--blue) calc(var(--shade, 0) * 100%), var(--grid)); color: var(--ink); min-width: 2.4rem; }
+.joint td.marg { background: transparent; color: var(--ink-2); font-weight: 500; }
+.joint tr[data-x] { cursor: pointer; }
+.joint tr.is-sel td { outline: 2px solid var(--gold); }
+.joint--wide td { padding: 0.6rem 1rem; font-size: 1rem; }
+.joint--wide td .exp { display: block; font-size: 0.75rem; color: var(--ink-2); font-weight: 400; }
+
+/* ---------- dartboard ---------- */
+.board-wrap { max-width: 380px; }
+.board { width: 100%; height: auto; }
+.board-ring { fill: var(--grid); stroke: var(--rule); }
+.board-ring--alt { fill: var(--surface); }
+
+/* ---------- confidence intervals ---------- */
+.ci-wrap { max-width: 640px; }
+.ci-svg { width: 100%; height: auto; display: block; }
+.ci-tick { fill: var(--ink-3); font-family: var(--font-display); font-size: 11px; }
+
+/* ---------- regression ---------- */
+.ols-wrap { max-width: 640px; }
+.ols { width: 100%; height: auto; display: block; background: var(--surface); border-radius: 8px; touch-action: none; }
+.ols text { fill: var(--ink-3); font-family: var(--font-display); font-size: 12px; }

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regression · Seeing Theory</title>
+<meta name="description" content="Least squares with draggable points, residuals, correlation and R², and the sampling distribution of the fitted slope.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 13</p>
+      <h1>Regression</h1>
+      <p class="lead">When one variable helps predict another, a line through the scatter summarises the relationship. Least squares picks the line, correlation grades how well it fits, and the machinery of chapters 7 to 10 says how much to trust its slope.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="least-squares" data-nav="Least squares">
+    <div class="prose">
+      <h2>Ordinary least squares</h2>
+      <p>Given pairs (xᵢ, yᵢ), we want a line ŷ = b₀ + b₁x that comes closest to the points. “Closest” needs a definition: least squares uses the vertical gaps, the <em>residuals</em> eᵢ = yᵢ − ŷᵢ, and chooses the line that minimises the sum of their squares. Calculus gives closed-form answers:</p>
+      <div class="math"><math display="block"><mrow><msub><mi>b</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mo>∑</mo><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo>¯</mo></mover><mo>)</mo><mo>(</mo><msub><mi>y</mi><mi>i</mi></msub><mo>−</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>)</mo></mrow><mrow><mo>∑</mo><msup><mrow><mo>(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>−</mo><mover><mi>x</mi><mo>¯</mo></mover><mo>)</mo></mrow><mn>2</mn></msup></mrow></mfrac><mo>,</mo><mspace width="1.5em"></mspace><msub><mi>b</mi><mn>0</mn></msub><mo>=</mo><mover><mi>y</mi><mo>¯</mo></mover><mo>−</mo><msub><mi>b</mi><mn>1</mn></msub><mover><mi>x</mi><mo>¯</mo></mover></mrow></math></div>
+      <p>The line always passes through the point of means (x̄, ȳ), and the residuals always sum to zero. Squaring makes distant points count for a lot: drag one point far from the others and watch it pull the line toward itself. The “squared residuals” view draws each residual as an actual square, so you can see the total area the line is minimising.</p>
+    </div>
+    <div class="lab" data-lab="ols"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Drag a single point to the top-left corner. The slope flips and R² collapses: one outlier can dominate a least-squares fit. Double-click a point to delete it. Then drag the points into a curve and notice that a straight line can fit badly while still being “the best line”.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="correlation-r2" data-nav="Correlation & R²">
+    <div class="prose">
+      <h2>Correlation and R²</h2>
+      <p>The sample correlation r is the covariance of chapter 5, computed from data and scaled to lie in [−1, 1]. It is tied to the fitted slope by b₁ = r · sᵧ/sₓ: the slope is the correlation in the units of the data. Its square, <em>R²</em>, has a direct interpretation as the fraction of the variation in y that the line accounts for. The total sum of squares of y around its mean splits, exactly as in ANOVA, into a part explained by the regression and a residual part, and R² is the explained fraction.</p>
+      <p>R² = 0.9 does not mean the line is correct, only that residuals are small relative to the spread of y. And correlation is not causation: ice-cream sales and drownings are correlated because both follow the summer.</p>
+    </div>
+    <div class="lab" data-lab="correlation"></div>
+  </section>
+
+  <section class="concept" id="slope-inference" data-nav="Inference">
+    <div class="prose">
+      <h2>Inference for the slope</h2>
+      <p>The fitted slope b₁ is a statistic, so it has a sampling distribution. If the true relationship is y = β₀ + β₁x + noise with normal noise of standard deviation σ, then b₁ is normal with mean β₁ (it is unbiased) and standard deviation σ/√Σ(xᵢ − x̄)². Spread-out x values pin the slope down; noisy y values loosen it. Replacing σ by the residual standard deviation gives a standard error, and a t interval with n − 2 degrees of freedom follows exactly as for a mean.</p>
+      <p>The lab draws sample after sample from a known line, fits each one, and stacks the slopes. Every fitted line is a little wrong, the histogram of slopes is a bell around the truth, and about 95% of the intervals contain 0.5.</p>
+    </div>
+    <div class="lab" data-lab="slopes"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: the noise σ doubles. What happens to the standard error of the slope, and to the width of the 95% interval?</summary>
+        <p>Both double. Set σ to 0.8, draw 200 samples, note the histogram width; then set σ to 1.6 and draw again.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

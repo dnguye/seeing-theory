@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Basic Probability · Seeing Theory</title>
+<meta name="description" content="An interactive introduction to the basic concepts of probability: chance events, sample spaces, expectation, variance, the law of large numbers, streaks, and Monte Carlo simulation.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2314213D'/%3E%3Ccircle cx='20' cy='20' r='6' fill='%23F4F6F9'/%3E%3Ccircle cx='44' cy='20' r='6' fill='%23F4F6F9'/%3E%3Ccircle cx='20' cy='44' r='6' fill='%23F4F6F9'/%3E%3Ccircle cx='44' cy='44' r='6' fill='%23F4F6F9'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%232A4DD0'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="topbar"></header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="hero-kicker">A visual introduction to probability</p>
+      <h1>Randomness is all around us.</h1>
+      <p class="lead">Probability theory is the mathematical framework for reasoning about chance events in a logically sound way. This chapter builds the basic vocabulary of that framework, and every idea in it comes with an experiment you can run yourself.</p>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#chance-events">Start with a coin</a>
+        <button class="btn" type="button" id="galton-burst">Drop 100 balls</button>
+      </div>
+    </div>
+    <figure class="hero-board">
+      <canvas id="galton" aria-label="A Galton board: balls fall through rows of pegs and pile up into a bell-shaped histogram"></canvas>
+      <figcaption>
+        <span>A Galton board. Each ball bounces left or right at random at every peg. No single path can be predicted; the pile they make together can. <strong><span id="galton-count">0</span> balls</strong> so far.</span>
+        <button class="btn btn--small" type="button" id="galton-reset">Clear</button>
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 1. CHANCE EVENTS ============ -->
+  <section class="concept" id="chance-events" data-nav="Chance events">
+    <div class="prose">
+      <h2>Chance events</h2>
+      <p>The <em>probability</em> of an event is a number that says how likely that event is to occur. It always lies between 0 and 1: a probability of 0 means the event is impossible, and a probability of 1 means it is certain.</p>
+      <p>The classic example is a coin toss. A fair coin has two outcomes, heads and tails, and each has probability ½. Any single flip is unpredictable. But flip the coin many times and something remarkable happens: the fraction of heads settles down. As the number of flips increases, the long-run frequency of heads is bound to get closer and closer to 50%. That stabilisation is the bridge between chance and mathematics. Probability is what long-run frequency converges to.</p>
+      <p>Not every coin is fair. Drag the weight slider to make heads more or less likely and watch the running frequency chase a different target. Assigning a number to each outcome, 1 for heads and 0 for tails, turns the flip into a <em>random variable</em>, an idea we return to below.</p>
+    </div>
+
+    <div class="lab" data-module="coin">
+      <div class="lab-stage">
+        <div class="coin-row">
+          <div class="coin" data-face="heads" role="img" aria-label="Coin">
+            <div class="coin-side coin-side--h"><span>H</span></div>
+            <div class="coin-side coin-side--t"><span>T</span></div>
+          </div>
+          <div class="count-bars" aria-hidden="true">
+            <div class="count-bar count-bar--h" id="coin-bar-h"></div>
+            <div class="count-bar count-bar--t" id="coin-bar-t"></div>
+          </div>
+        </div>
+        <div class="chart-box" id="coin-chart"></div>
+        <p class="legend"><span class="legend-item"><span class="swatch swatch--blue"></span>Fraction of heads so far</span><span class="legend-item"><span class="swatch swatch--green swatch--dash"></span>Probability of heads</span></p>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="coin-flip">Flip the coin</button>
+          <button class="btn" type="button" data-flips="100">Flip 100 times</button>
+          <button class="btn" type="button" data-flips="1000">Flip 1,000 times</button>
+          <button class="btn btn--quiet" type="button" id="coin-reset">Reset</button>
+        </div>
+        <label class="slider">
+          <span>Weight of the coin: P(heads) = <output id="coin-p-out">0.50</output></span>
+          <input type="range" id="coin-p" min="0" max="100" value="50" step="1">
+        </label>
+        <dl class="readouts">
+          <div><dt>Flips</dt><dd id="coin-n">0</dd></div>
+          <div><dt>Heads</dt><dd id="coin-heads">0</dd></div>
+          <div><dt>Tails</dt><dd id="coin-tails">0</dd></div>
+          <div><dt>Fraction of heads</dt><dd id="coin-freq">–</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set the coin to 0.70 and flip 1,000 times. How close does the fraction land? Now reset and flip only ten times. How far off can a small sample be?</p>
+      <details>
+        <summary>Check yourself: a coin lands heads 7 times in 10 flips. Is it biased?</summary>
+        <p>You can't tell from ten flips. A fair coin gives 7 or more heads in 10 flips about 17% of the time. Small samples are noisy; the law of large numbers only bites when the sample is large.</p>
+      </details>
+    </aside>
+  </section>
+
+  <!-- ============ 2. SAMPLE SPACES & EVENTS ============ -->
+  <section class="concept" id="sample-spaces" data-nav="Events">
+    <div class="prose">
+      <h2>Sample spaces and events</h2>
+      <p>Before we can compute probabilities we have to be precise about what can happen. The set of all possible outcomes of an experiment is its <em>sample space</em>, written Ω. For one roll of a die, Ω = {1, 2, 3, 4, 5, 6}. An <em>event</em> is any subset of the sample space: “the roll is even” is the event {2, 4, 6}.</p>
+      <p>The probability of an event is the sum of the probabilities of the outcomes it contains. When every outcome is equally likely, that is just the number of outcomes in the event divided by the size of the sample space.</p>
+      <div class="math">
+        <math display="block">
+          <mrow><mi>P</mi><mo>(</mo><mi>E</mi><mo>)</mo><mo>=</mo>
+          <munder><mo>∑</mo><mrow><mi>ω</mi><mo>∈</mo><mi>E</mi></mrow></munder>
+          <mi>P</mi><mo>(</mo><mi>ω</mi><mo>)</mo></mrow>
+        </math>
+      </div>
+      <p>Two consequences follow at once. The whole sample space has probability 1, because <em>something</em> must happen. And the probability that an event does <em>not</em> happen, its complement, is 1 − P(E). Tap the faces below to build an event, then roll to see how often it occurs.</p>
+    </div>
+
+    <div class="lab" data-module="events">
+      <div class="lab-stage">
+        <div class="events-layout">
+          <div>
+            <p class="stage-label">Sample space Ω — tap faces to put them in the event E</p>
+            <div class="face-row" id="event-faces"></div>
+            <div class="chips">
+              <button class="btn btn--small" type="button" data-preset="even">Even</button>
+              <button class="btn btn--small" type="button" data-preset="odd">Odd</button>
+              <button class="btn btn--small" type="button" data-preset="high">At least 5</button>
+              <button class="btn btn--small" type="button" data-preset="prime">Prime</button>
+              <button class="btn btn--small" type="button" data-preset="all">Everything</button>
+              <button class="btn btn--small" type="button" data-preset="none">Nothing</button>
+            </div>
+          </div>
+          <div class="event-die-wrap">
+            <div class="die" id="event-die" data-size="96"></div>
+            <p class="stage-label">Last roll</p>
+          </div>
+        </div>
+        <div class="compare-bars">
+          <div class="compare-row">
+            <span>Theory, P(E)</span>
+            <div class="track"><div class="fill fill--green" id="event-bar-theory"></div></div>
+          </div>
+          <div class="compare-row">
+            <span>Observed so far</span>
+            <div class="track"><div class="fill fill--blue" id="event-bar-observed"></div></div>
+          </div>
+        </div>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="event-roll">Roll the die</button>
+          <button class="btn" type="button" data-rolls="100">Roll 100 times</button>
+          <button class="btn" type="button" data-rolls="1000">Roll 1,000 times</button>
+          <button class="btn btn--quiet" type="button" id="event-reset">Reset</button>
+        </div>
+        <dl class="readouts">
+          <div class="span-2"><dt>Event E</dt><dd id="event-set" class="dd-text">{2, 4, 6}</dd></div>
+          <div><dt>P(E)</dt><dd id="event-p" class="dd-text">3/6 = 0.500</dd></div>
+          <div><dt>P(not E)</dt><dd id="event-pc">0.500</dd></div>
+          <div><dt>Rolls</dt><dd id="event-rolls">0</dd></div>
+          <div><dt>Rolls in E</dt><dd id="event-hits">0</dd></div>
+          <div class="span-2"><dt>Observed fraction in E</dt><dd id="event-freq">–</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Choose “Everything” and roll. Then choose “Nothing”. These are the two extremes, probability 1 and probability 0. Now pick “Even” and “At least 5” in turn. What is the probability of “even <em>or</em> at least 5”? Count the faces: {2, 4, 5, 6} gives 4/6, not 3/6 + 2/6, because the outcome 6 would be counted twice.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 3. EXPECTATION ============ -->
+  <section class="concept" id="expectation" data-nav="Expectation">
+    <div class="prose">
+      <h2>Expectation</h2>
+      <p>The expectation of a random variable is a number that attempts to capture the center of that random variable's distribution. It can be interpreted as the long-run average of many independent samples from the given distribution. More precisely, for a discrete random variable X the expectation is the probability-weighted sum of its possible values:</p>
+      <div class="math">
+        <math display="block">
+          <mrow><mi mathvariant="normal">E</mi><mo>[</mo><mi>X</mi><mo>]</mo><mo>=</mo>
+          <munder><mo>∑</mo><mrow><mi>x</mi><mo>∈</mo><mi>𝒳</mi></mrow></munder>
+          <mi>x</mi><mspace width="0.2em"></mspace><mi>P</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+        </math>
+      </div>
+      <p>For a fair die every face has probability 1/6, so E[X] = (1 + 2 + 3 + 4 + 5 + 6)/6 = 3.5, a value the die can never actually show. Expectation is a center of mass, not a most likely outcome.</p>
+      <p>Roll the die and watch the sample mean converge to 3.5. Then drag the bars to weight the die and see the expectation move with it. The running average will follow.</p>
+    </div>
+
+    <div class="lab" data-module="expectation">
+      <div class="lab-stage">
+        <div class="exp-layout">
+          <div class="die-wrap">
+            <div class="die" id="exp-die" data-size="96"></div>
+            <p class="stage-label">Last roll</p>
+          </div>
+          <div class="bars-wrap">
+            <p class="stage-label">P(x) for each face — drag a bar up or down</p>
+            <div id="exp-bars"></div>
+          </div>
+        </div>
+        <p class="formula-live">E[X] = <span id="exp-formula-values"></span></p>
+        <div class="chart-box" id="exp-chart"></div>
+        <p class="legend"><span class="legend-item"><span class="swatch swatch--blue"></span>Sample mean so far</span><span class="legend-item"><span class="swatch swatch--green swatch--dash"></span>Expectation E[X]</span></p>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="exp-roll">Roll the die</button>
+          <button class="btn" type="button" data-rolls="100">Roll 100 times</button>
+          <button class="btn" type="button" data-rolls="1000">Roll 1,000 times</button>
+          <button class="btn btn--quiet" type="button" id="exp-reset">Reset rolls</button>
+          <button class="btn btn--quiet" type="button" id="exp-fair">Make the die fair</button>
+        </div>
+        <dl class="readouts">
+          <div><dt>Rolls</dt><dd id="exp-n">0</dd></div>
+          <div><dt>Sample mean</dt><dd id="exp-mean">–</dd></div>
+          <div class="span-2"><dt>Expectation E[X]</dt><dd id="exp-E" class="dd-green">3.500</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Make face 6 very likely. Can you push E[X] above 5? What would it take to reach exactly 6? (You'd need P(6) = 1, which the bars stop just short of. An expectation equals the largest value only when nothing else can happen.)</p>
+      <details>
+        <summary>Check yourself: a lottery ticket costs $2 and pays $1,000,000 with probability one in a million. What is the expected value of buying one?</summary>
+        <p>E[payout] = 1,000,000 × 0.000001 = $1, so the expected value of the purchase is 1 − 2 = −$1. On average, every ticket loses a dollar, even though every individual ticket either loses $2 or wins big.</p>
+      </details>
+    </aside>
+  </section>
+
+  <!-- ============ 4. VARIANCE ============ -->
+  <section class="concept" id="variance" data-nav="Variance">
+    <div class="prose">
+      <h2>Variance</h2>
+      <p>Whereas expectation provides a measure of centrality, the variance of a random variable quantifies the spread of that random variable's distribution. It is the expectation of the squared deviation from the mean:</p>
+      <div class="math">
+        <math display="block">
+          <mrow><mi mathvariant="normal">Var</mi><mo>(</mo><mi>X</mi><mo>)</mo><mo>=</mo>
+          <mi mathvariant="normal">E</mi><mrow><mo>[</mo><msup><mrow><mo>(</mo><mi>X</mi><mo>−</mo><mi mathvariant="normal">E</mi><mo>[</mo><mi>X</mi><mo>]</mo><mo>)</mo></mrow><mn>2</mn></msup><mo>]</mo></mrow></mrow>
+        </math>
+      </div>
+      <p>Squaring does two jobs. It makes every deviation positive, so spread above and below the mean cannot cancel out, and it weights large deviations more heavily than small ones. Because variance is measured in squared units, we usually also report its square root, the <em>standard deviation</em>, which lives on the same scale as the data.</p>
+      <p>Draw cards from the deck below. Each draw contributes one squared deviation (x − μ)², plotted as a grey dot. The running average of those (blue) converges to the true variance (green). Remove cards to change the deck and watch both the mean and the spread respond.</p>
+    </div>
+
+    <div class="lab" data-module="variance">
+      <div class="lab-stage">
+        <p class="stage-label">The deck — tap a card to remove it or put it back</p>
+        <div class="card-row" id="var-cards"></div>
+        <div class="drawn" id="var-drawn"></div>
+        <div class="chart-box" id="var-chart"></div>
+        <p class="legend"><span class="legend-item"><span class="swatch swatch--grey"></span>Each draw's (x − μ)²</span><span class="legend-item"><span class="swatch swatch--blue"></span>Average so far</span><span class="legend-item"><span class="swatch swatch--green swatch--dash"></span>Variance</span></p>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="var-draw">Draw a card</button>
+          <button class="btn" type="button" data-draws="100">Draw 100 times</button>
+          <button class="btn" type="button" data-draws="1000">Draw 1,000 times</button>
+          <button class="btn btn--quiet" type="button" id="var-reset">Reset draws</button>
+        </div>
+        <dl class="readouts">
+          <div><dt>Cards in deck</dt><dd id="var-size">10</dd></div>
+          <div><dt>Mean μ</dt><dd id="var-mu">5.50</dd></div>
+          <div><dt>Draws</dt><dd id="var-n">0</dd></div>
+          <div><dt>Average (x − μ)²</dt><dd id="var-avg">–</dd></div>
+          <div><dt>Variance</dt><dd id="var-true" class="dd-green">8.250</dd></div>
+          <div><dt>Standard deviation</dt><dd id="var-sd" class="dd-green">2.872</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Keep only 1 and 10 in the deck: the variance is as large as it can be. Keep only 5 and 6: it is tiny. What single-card deck gives variance zero? (Any of them. With one card there is no spread at all.)</p>
+    </aside>
+  </section>
+
+  <!-- ============ 5. LAW OF LARGE NUMBERS ============ -->
+  <section class="concept" id="law-of-large-numbers" data-nav="Large numbers">
+    <div class="prose">
+      <h2>The law of large numbers</h2>
+      <p>You have now seen the same phenomenon three times: sample frequencies approach probabilities, sample means approach expectations, and sample variances approach the true variance. The <em>law of large numbers</em> is the theorem that guarantees it. Take independent samples from any distribution with a finite mean μ; then the average of the first n samples converges to μ as n grows.</p>
+      <p>It says nothing about any single sample, and nothing about short runs. Below, twenty gamblers each flip the same coin. For the first few flips their fortunes scatter wildly; after a thousand they are nearly indistinguishable. The convergence is also slow: the typical error shrinks like 1/√n, so ten times more flips buys only about three times more precision.</p>
+    </div>
+
+    <div class="lab" data-module="lln">
+      <div class="lab-stage">
+        <div class="chart-box chart-box--tall" id="lln-chart"></div>
+        <p class="legend"><span class="legend-item"><span class="swatch swatch--blue"></span>One gambler's running fraction of heads (twenty of them)</span><span class="legend-item"><span class="swatch swatch--green swatch--dash"></span>The coin's true probability</span></p>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="lln-run">Flip again, all twenty</button>
+        </div>
+        <label class="slider">
+          <span>Weight of the coin: P(heads) = <output id="lln-p-out">0.50</output></span>
+          <input type="range" id="lln-p" min="5" max="95" value="50" step="1">
+        </label>
+        <dl class="readouts">
+          <div class="span-2"><dt>Spread after 10 flips</dt><dd id="lln-10" class="dd-text">–</dd></div>
+          <div class="span-2"><dt>Spread after 100 flips</dt><dd id="lln-100" class="dd-text">–</dd></div>
+          <div class="span-2"><dt>Spread after 1,000 flips</dt><dd id="lln-1000" class="dd-text">–</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <details>
+        <summary>Check yourself: why is the x-axis on a log scale?</summary>
+        <p>Because the interesting action is early. On a linear axis the first hundred flips would be squeezed into the left tenth of the chart. A log axis gives the same room to “1 to 10”, “10 to 100” and “100 to 1,000”, which is roughly how much the picture changes in each of those stretches.</p>
+      </details>
+    </aside>
+  </section>
+
+  <!-- ============ 6. STREAKS ============ -->
+  <section class="concept" id="streaks" data-nav="Streaks">
+    <div class="prose">
+      <h2>Streaks and the gambler's fallacy</h2>
+      <p>Randomness does not look the way people expect. Ask someone to write down 200 “random” coin flips and they will avoid long runs; a real coin does not. In 200 fair flips the longest run of heads is usually six to eight long, and a run of ten is not rare. A useful rule of thumb: the longest run in n fair flips is about log₂ n.</p>
+      <p>This feeds a persistent illusion. After five heads in a row, tails feels “due”. But the coin has no memory. Each flip is <em>independent</em>: the probability of heads is the same no matter what came before. That is the <em>gambler's fallacy</em>, and you can test it directly below by counting what happened after every run of k heads.</p>
+    </div>
+
+    <div class="lab" data-module="streaks">
+      <div class="lab-stage">
+        <p class="stage-label">200 flips of a fair coin — the longest run of heads is outlined</p>
+        <div class="flip-strip" id="streak-strip" role="img"></div>
+        <p class="legend"><span class="legend-item"><span class="swatch swatch--blue"></span>Heads</span><span class="legend-item"><span class="swatch swatch--gold"></span>Tails</span></p>
+        <div class="fallacy">
+          <p class="stage-label">The test. In 100,000 fresh flips, look at every moment that came right after <span id="streak-k">4</span> heads in a row:</p>
+          <p class="fallacy-result">The next flip was heads <strong id="streak-after-heads">–</strong> times out of <strong id="streak-after">–</strong>, that is <strong id="streak-after-pct" class="dd-green">–</strong>. The streak changed nothing.</p>
+          <div class="chips" role="group" aria-label="Length of the run to look for">
+            <span class="chips-label">After a run of</span>
+            <button class="btn btn--small" type="button" data-k="2" aria-pressed="false">2</button>
+            <button class="btn btn--small" type="button" data-k="3" aria-pressed="false">3</button>
+            <button class="btn btn--small" type="button" data-k="4" aria-pressed="true">4</button>
+            <button class="btn btn--small" type="button" data-k="5" aria-pressed="false">5</button>
+            <button class="btn btn--small" type="button" data-k="6" aria-pressed="false">6</button>
+            <span class="chips-label">heads</span>
+            <button class="btn btn--small btn--quiet" type="button" id="streak-rerun">Run the test again</button>
+          </div>
+        </div>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" id="streak-new">New 200 flips</button>
+        </div>
+        <dl class="readouts">
+          <div><dt>Heads in 200</dt><dd id="streak-heads">–</dd></div>
+          <div><dt>Longest run of heads</dt><dd id="streak-longest">–</dd></div>
+          <div><dt>Longest run, either side</dt><dd id="streak-longest-any">–</dd></div>
+          <div><dt>Rule of thumb, log₂ 200</dt><dd id="streak-expected" class="dd-green">–</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Press “New 200 flips” ten times and keep a tally of the longest run each time. How often is it 5 or shorter? Then ask a friend to invent 200 flips by hand and look at theirs.</p>
+    </aside>
+  </section>
+
+  <!-- ============ 7. PROBABILITY AS AREA ============ -->
+  <section class="concept" id="monte-carlo" data-nav="Area">
+    <div class="prose">
+      <h2>Probability as area</h2>
+      <p>So far our sample spaces have been short lists. Probability also applies to <em>continuous</em> outcomes, and there it behaves like area. Throw a dart at random at a square board, so that every point is equally likely; then the probability that it lands in some region is the region's area divided by the area of the square.</p>
+      <p>This turns probability into a measuring tool. A circle inscribed in a square covers π/4 of it, so the fraction of darts that land inside the circle estimates π/4, and four times that fraction estimates π. Estimating a quantity by simulating random samples is called the <em>Monte Carlo method</em>. It is one of the most widely used ideas in modern computation, from physics to finance to graphics, and the law of large numbers is what makes it work.</p>
+    </div>
+
+    <div class="lab" data-module="montecarlo">
+      <div class="lab-stage">
+        <div class="mc-layout">
+          <canvas id="mc-board" aria-label="A square with an inscribed circle; darts land as blue dots inside the circle and red dots outside"></canvas>
+          <div class="mc-side">
+            <div class="chart-box" id="mc-chart"></div>
+            <p class="legend"><span class="legend-item"><span class="swatch swatch--blue"></span>Estimate of π so far</span><span class="legend-item"><span class="swatch swatch--green swatch--dash"></span>π</span></p>
+            <p class="legend"><span class="legend-item"><span class="swatch swatch--blue swatch--dot"></span>Inside the circle</span><span class="legend-item"><span class="swatch swatch--red swatch--dot"></span>Outside</span></p>
+          </div>
+        </div>
+      </div>
+      <aside class="lab-panel">
+        <div class="controls">
+          <button class="btn btn--primary" type="button" data-darts="1">Throw a dart</button>
+          <button class="btn" type="button" data-darts="100">Throw 100</button>
+          <button class="btn" type="button" data-darts="1000">Throw 1,000</button>
+          <button class="btn" type="button" data-darts="10000">Throw 10,000</button>
+          <button class="btn btn--quiet" type="button" id="mc-reset">Reset</button>
+        </div>
+        <dl class="readouts">
+          <div><dt>Darts</dt><dd id="mc-n">0</dd></div>
+          <div><dt>Inside the circle</dt><dd id="mc-inside">0</dd></div>
+          <div><dt>Fraction inside</dt><dd id="mc-ratio">–</dd></div>
+          <div><dt>4 × fraction</dt><dd id="mc-pi">–</dd></div>
+          <div class="span-2"><dt>Distance from π</dt><dd id="mc-err">–</dd></div>
+        </dl>
+      </aside>
+    </div>
+
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Throw 100 darts and note the estimate. Reset and throw 10,000. Repeat each a few times. The 100-dart estimates bounce around by a few tenths; the 10,000-dart ones by a few hundredths. That is the 1/√n rule from the previous section, seen from the other side.</p>
+    </aside>
+  </section>
+
+  <!-- ============ KEY IDEAS ============ -->
+  <section class="concept concept--ideas" id="key-ideas" data-nav="Key ideas">
+    <div class="prose">
+      <h2>Key ideas from this chapter</h2>
+      <p>The vocabulary you'll need for everything that follows.</p>
+    </div>
+    <dl class="ideas">
+      <div><dt>Outcome</dt><dd>One possible result of an experiment, such as rolling a 4.</dd></div>
+      <div><dt>Sample space, Ω</dt><dd>The set of all possible outcomes.</dd></div>
+      <div><dt>Event</dt><dd>Any set of outcomes. “Even” is the event {2, 4, 6}.</dd></div>
+      <div><dt>Probability</dt><dd>A number in [0, 1] for each event, equal to the sum of the probabilities of its outcomes. It is what long-run frequency converges to.</dd></div>
+      <div><dt>Complement</dt><dd>The event “not E”, with probability 1 − P(E).</dd></div>
+      <div><dt>Random variable</dt><dd>A number attached to each outcome, such as 1 for heads and 0 for tails.</dd></div>
+      <div><dt>Expectation, E[X]</dt><dd>The probability-weighted average of a random variable's values. Its long-run sample mean.</dd></div>
+      <div><dt>Variance and standard deviation</dt><dd>Var(X) = E[(X − E[X])²] measures spread; the standard deviation is its square root, in the original units.</dd></div>
+      <div><dt>Independence</dt><dd>Two events are independent when one happening tells you nothing about the other. Successive coin flips are independent.</dd></div>
+      <div><dt>Law of large numbers</dt><dd>Averages of independent samples converge to the expectation. Error shrinks roughly like 1/√n.</dd></div>
+      <div><dt>Monte Carlo method</dt><dd>Estimating a quantity by simulating random samples and averaging, justified by the law of large numbers.</dd></div>
+    </dl>
+  </section>
+
+  <!-- chapter list is generated from ST.site in js/nav.js -->
+  <section class="chapters" id="chapters"></section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+
+<footer class="footer">
+  <p>Rebuilt in 2026 from the archived <a href="https://seeing-theory.brown.edu/">Seeing Theory</a>, created by Daniel Kunin with Jingru Guo, Tyler Dae Devlin and Daniel Xiang at Brown University. The original prose for chance events, expectation and variance is theirs; the remaining sections are new. Source of the original is on <a href="https://github.com/seeingtheory/Seeing-Theory">GitHub</a>.</p>
+  <p>Built with plain HTML, CSS and JavaScript. No tracking, no frameworks, works offline.</p>
+</footer>
+
+<script src="js/core.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/galton.js"></script>
+<script src="js/coin.js"></script>
+<script src="js/events.js"></script>
+<script src="js/expectation.js"></script>
+<script src="js/variance.js"></script>
+<script src="js/lln.js"></script>
+<script src="js/streaks.js"></script>
+<script src="js/montecarlo.js"></script>
+<script>ST.initNav();</script>
+</body>
+</html>

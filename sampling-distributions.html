@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sampling Distributions · Seeing Theory</title>
+<meta name="description" content="From population to sample: the sampling distribution of the mean and other statistics, and the t, chi-square and F distributions.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 2 · Chapter 7</p>
+      <h1>Sampling distributions</h1>
+      <p class="lead">Probability runs forward: given the distribution, what will the data look like? Statistics runs backward: given the data, what was the distribution? The bridge between them is the idea that a statistic computed from a random sample is itself a random variable.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="population-sample" data-nav="Population & sample">
+    <div class="prose">
+      <h2>From population to sample</h2>
+      <p>A <em>population</em> is the whole collection we care about, described by parameters such as its mean μ and standard deviation σ. We rarely see it. Instead we draw a <em>sample</em> of n observations and compute <em>statistics</em> from it: the sample mean x̄, the sample standard deviation s, the median, the maximum.</p>
+      <p>Draw another sample and every statistic changes. The distribution of a statistic across all possible samples is its <em>sampling distribution</em>, and it is the key object of the second course: it tells us how far a statistic is likely to be from the parameter it estimates. Below, the population is adult heights, Normal(170, 8²). Draw samples and watch each statistic scatter.</p>
+    </div>
+    <div class="lab" data-lab="clt" data-parents="heights" data-stats="mean,median,sd,max" data-n="10"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Draw 1,000 samples of the mean, then of the median. Both centre on 170, but the median's histogram is wider: for normal data the mean is the more precise estimator. Then look at the maximum, which is biased far above 170 and drifts higher as n grows.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="sample-mean" data-nav="Sample mean">
+    <div class="prose">
+      <h2>The distribution of the sample mean</h2>
+      <p>For the sample mean, the central limit theorem gives the whole story: x̄ is approximately Normal(μ, σ²/n). Its standard deviation σ/√n is called the <em>standard error</em>. The formula has two lessons. Precision improves with sample size, but only as the square root: to halve the standard error you must quadruple n. And the spread of the population sets the scale of everything.</p>
+      <p>The same machinery applies to any parent distribution, which is why the lab lets you pick a skewed one and watch the bell appear anyway.</p>
+    </div>
+    <div class="lab" data-lab="clt" data-parents="exp,uniform,bimodal,normal" data-stats="mean" data-n="25"></div>
+  </section>
+
+  <section class="concept" id="t-distribution" data-nav="t">
+    <div class="prose">
+      <h2>The t distribution</h2>
+      <p>Standardising the sample mean gives z = (x̄ − μ)/(σ/√n), which is standard normal. In practice σ is unknown and we substitute the sample standard deviation s. The result, t = (x̄ − μ)/(s/√n), is no longer normal: s is itself noisy, and when it comes out small the ratio is inflated. Gosset, writing as “Student” in 1908, worked out the distribution while doing quality control at the Guinness brewery.</p>
+      <p>The <em>t distribution</em> with n − 1 degrees of freedom looks like the standard normal but with heavier tails. Extreme values are more likely because a small sample can underestimate σ. As the degrees of freedom grow, s becomes reliable and t merges into the normal; by df = 30 the two are close.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="t" data-overlay="normal"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set df = 1: the tails are so heavy that the variance is infinite (this is the Cauchy distribution from chapter 6). Move to df = 5, then 30, and watch the curve approach the dashed normal.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="chisq-f" data-nav="χ² and F">
+    <div class="prose">
+      <h2>Chi-square and F</h2>
+      <p>Two more sampling distributions complete the toolkit. A sum of k squared standard normal variables has a <em>chi-square</em> distribution with k degrees of freedom. It appears whenever we sum squared deviations: the sample variance from a normal population satisfies (n − 1)s²/σ² ~ χ²(n − 1), and the goodness-of-fit statistic of chapter 11 is approximately chi-square as well. It is right-skewed, with mean k and variance 2k, and becomes more symmetric as k grows.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="chisq"></div>
+    <div class="prose">
+      <p>The ratio of two independent chi-square variables, each divided by its degrees of freedom, has an <em>F distribution</em>. Since sample variances are scaled chi-squares, F is the distribution of a ratio of two variances, which is exactly what the analysis of variance in chapter 12 compares.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="f"></div>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>

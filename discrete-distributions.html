@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Discrete Distributions · Seeing Theory</title>
+<meta name="description" content="Random variables and probability mass functions: binomial, geometric, negative binomial, Poisson and hypergeometric distributions, each explorable with sliders and sampling.">
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/labs.css">
+<link rel="icon" href="favicon.svg">
+</head>
+<body>
+<header class="topbar"></header>
+<main id="top">
+  <section class="chapter-head">
+    <div>
+      <p class="hero-kicker">Probability &amp; Statistics 1 · Chapter 3</p>
+      <h1>Discrete distributions</h1>
+      <p class="lead">A random variable turns outcomes into numbers, and its distribution says how likely each number is. A handful of named distributions describe most counting situations: how many successes, how long until the first one, how many events in an interval.</p>
+    </div>
+    <div><p class="chapter-toc-label">In this chapter</p><ol class="chapter-toc"></ol></div>
+  </section>
+
+  <section class="concept" id="random-variables" data-nav="PMFs">
+    <div class="prose">
+      <h2>Random variables and probability mass functions</h2>
+      <p>A <em>random variable</em> X assigns a number to every outcome of an experiment: the number of heads in ten flips, the sum of two dice, the number of customers in an hour. It is <em>discrete</em> when its possible values can be listed. Its <em>probability mass function</em> (PMF) gives the probability of each value, p(k) = P(X = k); the probabilities are non-negative and sum to 1. Its <em>cumulative distribution function</em> (CDF) accumulates them, F(x) = P(X ≤ x).</p>
+      <p>Expectation and variance are computed from the PMF exactly as in chapter 1: E[X] = Σ k p(k), Var(X) = Σ (k − E[X])² p(k). The simplest example is the sum of dice. One die is flat; two dice make a triangle; keep adding dice and a bell shape emerges, which is the central limit theorem waiting in chapter 6.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="dicesum"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Switch to the cumulative view with two dice and read off P(S ≤ 7) directly: 21/36. Then sample 1,000 times and watch the empirical CDF (blue) settle onto the theoretical one.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="binomial" data-nav="Binomial">
+    <div class="prose">
+      <h2>Bernoulli and binomial</h2>
+      <p>A <em>Bernoulli</em> trial has two outcomes, success with probability p and failure with probability 1 − p. Run n independent trials and count the successes: that count is <em>binomial</em>, X ~ Bin(n, p). A particular sequence with k successes has probability pᵏ(1 − p)ⁿ⁻ᵏ, and there are C(n, k) such sequences, so</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>k</mi><mo>)</mo><mo>=</mo><mrow><mo>(</mo><mfrac linethickness="0"><mi>n</mi><mi>k</mi></mfrac><mo>)</mo></mrow><msup><mi>p</mi><mi>k</mi></msup><msup><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mi>p</mi><mo>)</mo></mrow><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></msup></mrow></math></div>
+      <p>Its mean is np and its variance np(1 − p). The variance is largest when p = ½: a fair coin is the most unpredictable coin. For large n the shape becomes a smooth bell; we return to that in chapter 6.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="binomial"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Set n = 20 and p = 0.1, then p = 0.5, then p = 0.9. The distribution is skewed right, symmetric, then skewed left. Where does the variance peak?</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="geometric" data-nav="Geometric">
+    <div class="prose">
+      <h2>Geometric and negative binomial</h2>
+      <p>Instead of fixing the number of trials and counting successes, fix the number of successes and count the trials. The number of trials up to and including the first success is <em>geometric</em>: P(X = k) = (1 − p)ᵏ⁻¹ p, since the first k − 1 trials fail and the k-th succeeds. Its mean is 1/p: with p = 0.1, you wait ten trials on average.</p>
+      <p>The geometric distribution is <em>memoryless</em>. If you have already failed 20 times, the number of further trials you need has exactly the same distribution as when you started. The coin does not owe you anything, which is the gambler's fallacy from chapter 1 in a new costume.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="geometric"></div>
+    <div class="prose">
+      <p>Waiting for the r-th success instead of the first gives the <em>negative binomial</em> distribution, which is the sum of r independent geometric waits. Its mean is r/p.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="negbinomial"></div>
+  </section>
+
+  <section class="concept" id="poisson" data-nav="Poisson">
+    <div class="prose">
+      <h2>Poisson</h2>
+      <p>Many counts have no natural upper limit: emails in an hour, typos on a page, meteorites in a year. If events occur independently at a steady average rate λ, the count in one interval is <em>Poisson</em>:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>k</mi><mo>)</mo><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mo>−</mo><mi>λ</mi></mrow></msup><msup><mi>λ</mi><mi>k</mi></msup></mrow><mrow><mi>k</mi><mo>!</mo></mrow></mfrac></mrow></math></div>
+      <p>Its mean and variance are both λ. The Poisson distribution is what the binomial becomes when n is large and p is small with np = λ held fixed: a huge number of opportunities, each unlikely. That is why it fits rare events so well.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="poisson"></div>
+    <aside class="try">
+      <h3>Try this</h3>
+      <p>Compare Poisson(λ = 3) with Binomial(n = 60, p = 0.05) on the binomial lab above. The two PMFs are nearly identical. Then compare λ = 20 with the normal shape: for large λ, Poisson looks like a bell too.</p>
+    </aside>
+  </section>
+
+  <section class="concept" id="hypergeometric" data-nav="Hypergeometric">
+    <div class="prose">
+      <h2>Hypergeometric</h2>
+      <p>The binomial assumes independent trials, which is what you get when sampling <em>with</em> replacement. Draw <em>without</em> replacement from a finite population, say n cards from a deck with K red cards among N, and each draw changes the odds for the next. The count of red cards is <em>hypergeometric</em>:</p>
+      <div class="math"><math display="block"><mrow><mi>P</mi><mo>(</mo><mi>X</mi><mo>=</mo><mi>k</mi><mo>)</mo><mo>=</mo><mfrac><mrow><mrow><mo>(</mo><mfrac linethickness="0"><mi>K</mi><mi>k</mi></mfrac><mo>)</mo></mrow><mrow><mo>(</mo><mfrac linethickness="0"><mrow><mi>N</mi><mo>−</mo><mi>K</mi></mrow><mrow><mi>n</mi><mo>−</mo><mi>k</mi></mrow></mfrac><mo>)</mo></mrow></mrow><mrow><mo>(</mo><mfrac linethickness="0"><mi>N</mi><mi>n</mi></mfrac><mo>)</mo></mrow></mfrac></mrow></math></div>
+      <p>Its mean is the same as the binomial's, nK/N, but its variance is smaller by the factor (N − n)/(N − 1): drawing without replacement removes some randomness. When N is much larger than n the difference vanishes and the binomial is a fine approximation.</p>
+    </div>
+    <div class="lab" data-lab="dist" data-dist="hypergeometric"></div>
+    <aside class="try">
+      <details>
+        <summary>Check yourself: N = 40, K = 15, n = 10. Why is Var(X) smaller than for Binomial(10, 15/40)?</summary>
+        <p>Binomial variance would be 10 × 0.375 × 0.625 = 2.34. The finite-population factor (40 − 10)/(40 − 1) = 0.77 cuts it to 1.80. Drawing a red card makes the next draw less likely to be red, which pulls the count toward its mean.</p>
+      </details>
+    </aside>
+  </section>
+
+  <nav class="pager" aria-label="Chapter navigation"></nav>
+</main>
+<footer class="footer">
+  <p>Part of a rebuilt <a href="index.html">Seeing Theory</a>, after the original by Daniel Kunin and collaborators at Brown University. Built with plain HTML, CSS and JavaScript.</p>
+</footer>
+<script src="js/core.js"></script>
+<script src="js/stats.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/labs-prob.js"></script>
+<script src="js/labs-stat.js"></script>
+<script>ST.initNav(); ST.mountLabs();</script>
+</body>
+</html>
