@@ -1,5 +1,9 @@
 # Seeing Theory, rebuilt
 
+> **An updated version of [Seeing Theory](https://github.com/seeingtheory/Seeing-Theory)** by [Seeing Theory](https://github.com/seeingtheory) (Daniel Kunin with Jingru Guo, Tyler Dae Devlin and Daniel Xiang, Brown University). All credit for the original idea, design and chapters goes to them; see [Credits](#credits).
+>
+> Live site: <https://dnguye.github.io/seeing-theory/>
+
 A modern, dependency-free recreation of the archived [Seeing Theory](https://seeing-theory.brown.edu/) extended into a full two-course sequence: **Probability & Statistics 1** (chapters 1–6) and **Probability & Statistics 2** (chapters 7–14). Every concept has an interactive lab in the same style: green = theory, blue = what you observed.
 
 ## Run it
@@ -72,4 +76,9 @@ The `dist` lab takes `data-dist` (binomial, geometric, negbinomial, poisson, hyp
 
 ## Credits
 
-Original Seeing Theory by Daniel Kunin with Jingru Guo, Tyler Dae Devlin and Daniel Xiang (Brown University), source at <https://github.com/seeingtheory/Seeing-Theory>. Chapter 1's definitions of expectation and variance and its coin, die and card experiments follow the original; everything else here is new.
+This project is an updated version of **Seeing Theory**, created by [Seeing Theory](https://github.com/seeingtheory): Daniel Kunin with Jingru Guo, Tyler Dae Devlin and Daniel Xiang (Brown University).
+
+- Original source: <https://github.com/seeingtheory/Seeing-Theory> (Apache License 2.0)
+- Original site: <https://seeing-theory.brown.edu/>
+
+What changed in this version: the site was rebuilt from scratch in plain HTML, CSS and JavaScript (no dependencies or build step), and extended from the original's six chapters to fourteen, adding a second course on statistical inference (chapters 7–14). Chapter 1's definitions of expectation and variance and its coin, die and card experiments follow the original; the other labs and text are new. This version is not affiliated with or endorsed by the original authors.
